@@ -7,7 +7,7 @@ public class CreateMonitoredMachineCommandFromResourceAssembler
 {
     public static CreateMonitoredMachineCommand ToCommandFromResource(CreateMonitoredMachineResource resource)
     {
-        return new CreateMonitoredMachineCommand(resource.UserId, resource.Name, resource.UrlToImage, resource.Status);
+        return new CreateMonitoredMachineCommand(resource.UserId, resource.Name, resource.UrlToImage, resource.Status, resource.MaintenanceId);
         
     }
 }

@@ -15,17 +15,22 @@ public partial class MonitoredMachine
     public Maintenance maintenance  { get; internal set; }
     public int MaintenanceId { get; private set; }
 
-    public MonitoredMachine()
+    public MonitoredMachine(long userId, string name, string urlToImage, string status, int maintenanceId)
     {
-        
+        UserId = userId;
+        Name = name;
+        UrlToImage = urlToImage;
+        Status = status;
+        MaintenanceId = maintenanceId;
     }
+    
     public MonitoredMachine(CreateMonitoredMachineCommand command)
     {
         UserId = command.UserId;
         Name = command.Name;
         UrlToImage = command.UrlToImage;
         Status = command.Status;
-        MaintenanceId- command.MaintenanceId;
+        MaintenanceId = command.MaintenanceId;
     }
 
     public void UpdateMonitoringStatus(UpdateMonitoringStatusCommand command)
