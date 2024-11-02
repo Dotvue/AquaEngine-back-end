@@ -51,9 +51,6 @@ builder.Services.AddScoped<IMonitoredMachineRepository,MonitoredMachineRepositor
 builder.Services.AddScoped<IMonitoredMachineCommandService, MonitoredMachineCommandService>();
 builder.Services.AddScoped<IMonitoredMachineQueryService, MonitoredMachineQueryService>();
 
-builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
-builder.Services.AddScoped<IMaintenanceCommandService, MaintenanceCommandService>();
-builder.Services.AddScoped<IMaintenanceQueryService, MaintenanceQueryService>();
 
 
 // Sales Bounded Context Dependency Injection

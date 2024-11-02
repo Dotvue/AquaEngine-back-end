@@ -43,29 +43,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
          .IsRequired();
       
       // Maintenance
-      builder.Entity<Maintenance>()
-         .ToTable("maintenances")
-         .HasKey(ma => ma.Id);
-      builder.Entity<Maintenance>()
-         .Property(ma => ma.Id)
-         .IsRequired()
-         .ValueGeneratedOnAdd();
-      builder.Entity<Maintenance>()
-         .Property(ma => ma.TechnicianName)
-         .IsRequired();
-      builder.Entity<Maintenance>()
-         .Property(ma => ma.IssueType)
-         .IsRequired();
-      builder.Entity<Maintenance>()
-         .Property(ma => ma.Description)
-         .IsRequired();
-      builder.Entity<Maintenance>()
-         .Property(ma => ma.AdditionalInfo)
-         .IsRequired();
-      builder.Entity<Maintenance>()
-         .Property(ma => ma.MonitoredMachineId)
-         .IsRequired();
-      
+   
       builder.UseSnakeCaseNamingConvention();
    }
 }
