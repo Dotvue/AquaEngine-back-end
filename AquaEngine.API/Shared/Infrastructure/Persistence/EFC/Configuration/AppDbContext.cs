@@ -1,4 +1,5 @@
 using AquaEngine.API.Analytics.Domain.Model.Aggregate;
+using AquaEngine.API.Analytics.Domain.Model.Entities;
 using AquaEngine.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +42,39 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
          .Property(mm => mm.UserId)
          .HasColumnName("UserId")
          .IsRequired();
-      
+      builder.Entity<MonitoredMachine>()
+         .Property(mm => mm.MaintenanceId)
+         .IsRequired();
       // Maintenance
+      builder.Entity<Maintenance>().HasKey(ma => ma.Id);
+      builder.Entity<Maintenance>().Property(ma => ma.Id).IsRequired().ValueGeneratedOnAdd();
+
+      builder.Entity<Maintenance>()
+         .Property(ma => ma.MachineId)
+         .IsRequired();
+      
+      builder.Entity<Maintenance>()
+         .Property(ma => ma.Date)
+         .IsRequired()
+         .HasMaxLength(10);
+
+      builder.Entity<Maintenance>()
+         .Property(ma => ma.Technician)
+         .IsRequired()
+         .HasMaxLength(40);
+      
+      builder.Entity<Maintenance>()
+         .Property(ma => ma.IssueType)
+         .IsRequired();
+      
+      builder.Entity<Maintenance>()
+         .Property(ma => ma.Description)
+         .IsRequired();
+
+      builder.Entity<Maintenance>()
+         .Property(ma => ma.AdditionalInfo)
+         .IsRequired()
+         .HasMaxLength(300);
    
       builder.UseSnakeCaseNamingConvention();
    }
