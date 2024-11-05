@@ -1,0 +1,8 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "./AquaEngine.API/Dockerfile"
+
+[deploy]
+startCommand = "./AquaEngine.API"
+restartPolicyType = "always"
+healthcheckPath = "/health"
