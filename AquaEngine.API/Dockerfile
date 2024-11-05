@@ -1,4 +1,4 @@
-# Etapa de construcción
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -7,19 +7,21 @@ RUN apt-get update \
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["AquaEngine.API/AquaEngine.API.csproj", "AquaEngine.API"]
+# Copy the project file and restore dependencies
+COPY ["AquaEngine.API/AquaEngine.API.csproj", "AquaEngine.API/"]
 RUN dotnet restore "./AquaEngine.API/AquaEngine.API.csproj"
 
+# Copy the rest of the source code and build the project
 COPY . .
 WORKDIR "/src/AquaEngine.API"
 RUN dotnet build "./AquaEngine.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Etapa de publicación
+# Publish stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./AquaEngine.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Etapa final para ejecutar la aplicación
+# Final stage to run the application
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 EXPOSE 8080
