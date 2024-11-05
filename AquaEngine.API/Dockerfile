@@ -7,7 +7,7 @@ RUN apt-get update \
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["AquaEngine.API/AquaEngine.API.csproj", "AquaEngine.API/"]
+COPY ["AquaEngine.API/AquaEngine.API.csproj", "AquaEngine.API"]
 RUN dotnet restore "./AquaEngine.API/AquaEngine.API.csproj"
 
 COPY . .
