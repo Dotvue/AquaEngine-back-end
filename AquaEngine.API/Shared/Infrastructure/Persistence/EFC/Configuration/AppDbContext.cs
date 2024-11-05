@@ -5,8 +5,6 @@ using AquaEngine.API.Control.Domain.Model.Aggregates;
 
 using AquaEngine.API.Planning.Domain.Model.Aggregates;
 using AquaEngine.API.Analytics.Domain.Model.Aggregate;
-using AquaEngine.API.Control.Domain.Model.ValueObjects;
-
 using AquaEngine.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
