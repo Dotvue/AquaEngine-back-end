@@ -1,22 +1,20 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-# Install clang/zlib1g-dev dependencies for publishing to native
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    clang zlib1g-dev
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY AquaEngine.API.csproj AquaEngine.API/
-RUN dotnet restore "./AquaEngine.API/AquaEngine.API.csproj"
+COPY ["AquaEngine.API.csproj", "./"]
+RUN dotnet restore "AquaEngine.API.csproj"
 COPY . .
-WORKDIR "/AquaEngine.API"
-RUN dotnet build "./AquaEngine.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/"
+RUN dotnet build "AquaEngine.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./AquaEngine.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=true
+RUN dotnet publish "AquaEngine.API.csproj" -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0 AS final
+FROM base AS final
 WORKDIR /app
-EXPOSE 8080
 COPY --from=publish /app/publish .
-ENTRYPOINT ["./AquaEngine.API"]
+ENTRYPOINT ["dotnet", "AquaEngine.API.dll"]
