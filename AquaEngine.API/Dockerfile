@@ -8,7 +8,7 @@ WORKDIR /src
 COPY AquaEngine.API.csproj AquaEngine.API/
 RUN dotnet restore "./AquaEngine.API/AquaEngine.API.csproj"
 COPY . .
-WORKDIR "/src/AquaEngine.API"
+WORKDIR "/AquaEngine.API"
 RUN dotnet build "./AquaEngine.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
