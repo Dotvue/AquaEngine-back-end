@@ -35,6 +35,8 @@ using AquaEngine.API.Profiles.Application.Internal.QueryServices;
 using AquaEngine.API.Profiles.Domain.Repositories;
 using AquaEngine.API.Profiles.Domain.Services;
 using AquaEngine.API.Profiles.Infrastructure.Persistence.EFC.Repositories;
+using AquaEngine.API.Profiles.Interfaces.ACL;
+using AquaEngine.API.Profiles.Interfaces.ACL.Services;
 using AquaEngine.API.Shared.Domain.Repositories;
 using AquaEngine.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using AquaEngine.API.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -164,6 +166,8 @@ builder.Services.AddScoped<ICartQueryService, CartQueryService>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
+builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
+
 
 // IAM Bounded Context Dependency Injection Configuration
 
@@ -176,6 +180,8 @@ builder.Services.AddScoped<IUserCommandService, UserCommandService>();
 builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
+
+builder.Services.AddScoped<ExternalProfileService>();
 
 // Common Exception Handling Middleware
 builder.Services.AddExceptionHandler<CommonExceptionHandler>();
