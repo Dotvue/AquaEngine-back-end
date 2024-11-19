@@ -31,5 +31,5 @@ public interface IUserRepository : IBaseRepository<User>
     /// <returns>
     /// True if the user exists; otherwise, false.
     /// </returns>
-    bool ExistsByUsername(string username);
+    Task<bool> ExistsByUsername(string username);
 }

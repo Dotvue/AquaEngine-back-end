@@ -24,8 +24,8 @@ public class UserRepository(AppDbContext context) : BaseRepository<User>(context
     }
 
     // inheritedDoc
-    public bool ExistsByUsername(string username)
+    public Task<bool> ExistsByUsername(string username)
     {
-        return Context.Set<User>().Any(user => user.Username.Equals(username));
+        return Context.Set<User>().AnyAsync(user => user.Username.Equals(username));
     }
 }
