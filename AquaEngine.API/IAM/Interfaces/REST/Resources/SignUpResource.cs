@@ -9,4 +9,4 @@
 /// <param name="Password">
 /// The password of the user.
 /// </param>
-public record SignUpResource(string Username, string Password);
+public record SignUpResource(string Username, string Password, string FullName, string PhoneNumber, string DniNumber);
