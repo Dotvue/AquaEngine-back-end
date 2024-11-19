@@ -26,21 +26,29 @@ public class UserCommandService(
     IUserRepository userRepository,
     ITokenService tokenService,
     IHashingService hashingService,
-    IUnitOfWork unitOfWork
+    IUnitOfWork unitOfWork,
+    ExternalProfileService externalProfileService
 ) : IUserCommandService
 {
     // <inheritdoc/>
     public async Task Handle(SignUpCommand command)
     {
-        if (userRepository.ExistsByUsername(command.Username))
+        if (await userRepository.ExistsByUsername(command.Username))
             throw new Exception($"Username {command.Username} already exists");
 
         var hashedPassword = hashingService.HashPassword(command.Password);
         var user = new User(command.Username, hashedPassword);
+        
         try
         {
             await userRepository.AddAsync(user);
             await unitOfWork.CompleteAsync();
+            
+            var userId = await externalProfileService.CreateProfile(
+                command.fullName, command.phoneNumber, command.Username, command.dniNumber, user.Id);
+        
+            if (userId == 0)
+                throw new Exception("Error creating profile");
         }
         catch (Exception e)
         {
@@ -52,10 +60,14 @@ public class UserCommandService(
     public async Task<(User user, string token)> Handle(SignInCommand command)
     {
         var user = await userRepository.FindByUsernameAsync(command.Username);
+        
         if (user is null) throw new Exception($"User {command.Username} not found");
+        
         if (!hashingService.VerifyPassword(command.Password, user.PasswordHash))
             throw new Exception("Invalid password");
+        
         var token = tokenService.GenerateToken(user);
+        
         return (user, token);
     }
 }
