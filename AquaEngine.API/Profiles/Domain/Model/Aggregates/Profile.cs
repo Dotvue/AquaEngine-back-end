@@ -16,17 +16,16 @@ public partial class Profile
     public int Id { get; }
     
     public DniNumber Dni { get; }
-    public PersonName Name { get; }
+    public string FullName { get; }
     public PhoneNumber Phone { get; }
     public EmailAddress Email { get; }
     public UserId UserIdentifier { get; }
     
-    public string FullName => Name.FullName;
     public string EmailAddress => Email.Address;
 
     public Profile()
     {
-        Name = new PersonName(); 
+        FullName = string.Empty;
         Email = new EmailAddress();
         Phone = new PhoneNumber();
         Dni = new DniNumber();
@@ -35,7 +34,7 @@ public partial class Profile
 
     public Profile(CreateProfileCommand command, int userIdentifier)
     {
-        Name = new PersonName(command.FirstName, command.LastName);
+        FullName = command.FullName;
         Email = new EmailAddress(command.Email);
         Phone = new PhoneNumber(command.PhoneNumber);
         Dni = new DniNumber(command.DniNumber);

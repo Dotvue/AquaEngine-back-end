@@ -8,6 +8,6 @@ public static class ProfileResourceFromEntityAssembler
     public static ProfileResource ToResourceFromEntity(Profile entity)
     {
         return new ProfileResource(entity.Id, entity.UserIdentifier.Identifier,
-            entity.Name.Name, entity.Name.LastName, entity.Phone.Number, entity.EmailAddress, entity.Dni.Number);
+            entity.FullName, entity.Phone.Number, entity.EmailAddress, entity.Dni.Number);
     }
 }

@@ -8,11 +8,8 @@ public interface IProfilesContextFacade
     /// <summary>
     /// Creates a new profile.
     /// </summary>
-    /// <param name="firstName">
-    /// First name.
-    /// </param>
-    /// <param name="lastName">
-    /// Last name.
+    /// <param name="fullName">
+    /// Full name.
     /// </param>
     /// <param name="email">
     /// Email address.
@@ -32,8 +29,7 @@ public interface IProfilesContextFacade
     /// <returns>
     /// The profile identifier.
     /// </returns>
-    Task<int> CreateProfileAsync(string firstName, 
-        string lastName, string email, string phoneNumber, string dniNumber, int userId);
+    Task<int> CreateProfileAsync(string fullName, string email, string phoneNumber, string dniNumber, int userId);
     
     /// <summary>
     /// Fetches the profile identifier by user identifier.

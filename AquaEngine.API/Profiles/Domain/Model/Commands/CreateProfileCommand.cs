@@ -1,3 +1,3 @@
 ﻿namespace AquaEngine.API.Profiles.Domain.Model.Commands;
 
-public record CreateProfileCommand(string FirstName, string LastName, string Email, string PhoneNumber, string DniNumber);
+public record CreateProfileCommand(string FullName, string Email, string PhoneNumber, string DniNumber);
