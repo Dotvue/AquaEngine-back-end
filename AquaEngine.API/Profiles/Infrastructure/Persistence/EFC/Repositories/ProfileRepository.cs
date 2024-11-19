@@ -15,46 +15,28 @@ namespace AquaEngine.API.Profiles.Infrastructure.Persistence.EFC.Repositories;
 public class ProfileRepository(AppDbContext context)
     : BaseRepository<Profile>(context), IProfileRepository
 {
-    /// <summary>
-    /// Creates a new instance of the <see cref="ProfileRepository"/> class.
-    /// </summary>
-    /// <param name="dni">
-    /// The DNI to search for.
-    /// </param>
-    /// <returns>
-    /// The profile with the given DNI, or null if no profile was found.
-    /// </returns>
-    public async Task<Profile?> FindProfileByDni(string dni)
+    /// <inheritdoc />
+    public bool ExistsByDni(string dni)
     {
-        return await Context.Set<Profile>().FirstOrDefaultAsync(profile => profile.Dni.Number == dni);
+        return Context.Set<Profile>().Any(profile => profile.Dni.Number == dni);
     }
 
-    /// <summary>
-    /// Finds a profile by its phone number.
-    /// </summary>
-    /// <param name="phoneNumber">
-    /// The phone number to search for.
-    /// </param>
-    /// <returns>
-    /// The profile with the given phone number, or null if no profile was found.
-    /// </returns>
-    public async Task<Profile?> FindProfileByPhoneNumber(string phoneNumber)
+    /// <inheritdoc />
+    public bool ExistsByPhoneNumber(string phoneNumber)
     {
-        return await Context.Set<Profile>().FirstOrDefaultAsync(profile => profile.Phone.Number == phoneNumber);
+        return Context.Set<Profile>().Any(profile => profile.Phone.Number == phoneNumber);
     }
 
-    /// <summary>
-    /// Finds a profile by its user ID.
-    /// </summary>
-    /// <param name="userId">
-    /// The user ID to search for.
-    /// </param>
-    /// <returns>
-    /// The profile with the given user ID, or null if no profile was found.
-    /// </returns>
-    public async Task<Profile?> FindProfileByUserId(int userId)
+    /// <inheritdoc />
+    public bool ExistsByUserId(int userId)
     {
-        return await Context.Set<Profile>().FirstOrDefaultAsync(
-            profile => profile.UserIdentifier.Identifier == userId);
+        return Context.Set<Profile>().Any(profile => profile.UserIdentifier.Identifier == userId);
+    }
+
+    /// <inheritdoc />
+    public Task<Profile?> FindProfileByUserId(int userId)
+    { 
+        return Context.Set<Profile>().FirstOrDefaultAsync(profile => profile.UserIdentifier.Identifier == userId);
     }
 }
+
