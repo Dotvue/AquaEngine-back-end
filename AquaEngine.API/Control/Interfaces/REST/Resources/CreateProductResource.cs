@@ -1,3 +1,3 @@
 ﻿namespace AquaEngine.API.Control.Interfaces.REST.Resources;
 
-public record CreateProductResource(long UserId, string Name, string QuantityPerUnit, double UnitPrice, int Quantity);
+public record CreateProductResource(string Name, string QuantityPerUnit, double UnitPrice, int Quantity, int UserId);

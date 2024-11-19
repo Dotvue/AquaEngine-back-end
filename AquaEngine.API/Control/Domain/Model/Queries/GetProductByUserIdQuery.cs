@@ -2,4 +2,4 @@
 
 namespace AquaEngine.API.Control.Domain.Model.Queries;
 
-public record GetProducctByUserIdQuery(UserId UserId);
+public record GetProductByUserIdQuery(int UserId);

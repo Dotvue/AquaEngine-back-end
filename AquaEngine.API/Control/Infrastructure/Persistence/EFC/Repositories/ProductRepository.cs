@@ -15,7 +15,7 @@ public class ProductRepository(AppDbContext context)
         return await Context.Set<Product>().FirstOrDefaultAsync(p => p.Name == name);
     }
 
-    public async Task<IEnumerable<Product>> FindByUserIdAsync(long userId)
+    public async Task<IEnumerable<Product>> FindByUserIdAsync(int userId)
     {
         return await Context.Set<Product>().Where(p => p.UserId == userId).ToListAsync();
     }
