@@ -30,6 +30,11 @@ using AquaEngine.API.IAM.Infrastructure.Persistence.EFC.Repositories;
 using AquaEngine.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
 using AquaEngine.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 using AquaEngine.API.IAM.Infrastructure.Tokens.JWT.Services;
+using AquaEngine.API.Profiles.Application.Internal.CommandServices;
+using AquaEngine.API.Profiles.Application.Internal.QueryServices;
+using AquaEngine.API.Profiles.Domain.Repositories;
+using AquaEngine.API.Profiles.Domain.Services;
+using AquaEngine.API.Profiles.Infrastructure.Persistence.EFC.Repositories;
 using AquaEngine.API.Shared.Domain.Repositories;
 using AquaEngine.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using AquaEngine.API.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -52,22 +57,21 @@ if (connectionString == null)
     throw new InvalidOperationException("Connection string not found.");
 }
 
-builder.Services.AddDbContext<AppDbContext>(
-    options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    if (builder.Environment.IsDevelopment())
     {
-        if (connectionString != null)
-            if (builder.Environment.IsDevelopment())
-                options.UseMySQL(connectionString)
-                    .LogTo(Console.WriteLine, LogLevel.Information)
-                    .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors();
-            else if (builder.Environment.IsProduction())
-                options.UseMySQL(connectionString)
-                    .LogTo(Console.WriteLine, LogLevel.Error)
-                    .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors();
-    });
-
+        options.UseMySQL(connectionString)
+            .LogTo(Console.WriteLine, LogLevel.Information)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    }
+    else if (builder.Environment.IsProduction())
+    {
+        options.UseMySQL(connectionString)
+            .LogTo(Console.WriteLine, LogLevel.Error);
+    }
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -156,6 +160,11 @@ builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICartCommandService, CartCommandService>();
 builder.Services.AddScoped<ICartQueryService, CartQueryService>();
 
+// Profiles Bounded Context Dependency Injection Configuration
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
+builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
+
 // IAM Bounded Context Dependency Injection Configuration
 
 // TokenSettings Configuration
@@ -191,15 +200,18 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // Enable CORS
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors("AllowAllPolicy");
 
-// Add authorization middleware to pipeline
+// Enable Request Authorization Middleware
 app.UseRequestAuthorization();
 
+// Enable Exception Handling Middleware
+app.UseExceptionHandler();
+
+// Other Middleware
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();

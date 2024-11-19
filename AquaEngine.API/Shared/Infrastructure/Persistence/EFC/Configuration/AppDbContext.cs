@@ -8,6 +8,7 @@ using AquaEngine.API.Planning.Domain.Model.Aggregates;
 using AquaEngine.API.Analytics.Domain.Model.Aggregate;
 using AquaEngine.API.Control.Domain.Model.ValueObjects;
 using AquaEngine.API.Planning.Domain.Model.Entities;
+using AquaEngine.API.Profiles.Domain.Model.Aggregates;
 using AquaEngine.API.Sales.Domain.Model.Aggregates;
 using AquaEngine.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
@@ -146,6 +147,35 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
       builder.Entity<Cart>().Property(c => c.Name).IsRequired().HasMaxLength(30);
       builder.Entity<Cart>().Property(c => c.UrlToImage).IsRequired().HasMaxLength(250);
       
+      // Profiles 
+
+      builder.Entity<Profile>().HasKey(p => p.Id);
+      builder.Entity<Profile>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+      
+      builder.Entity<Profile>().OwnsOne(p => p.Name, n => 
+       {
+        n.WithOwner().HasForeignKey("Id");
+        n.Property(p => p.Name).HasColumnName("FirstName");
+        n.Property(p => p.LastName).HasColumnName("LastName");
+       });
+
+       builder.Entity<Profile>().OwnsOne(p => p.Email, n =>
+       {
+        n.WithOwner().HasForeignKey("Id");
+        n.Property(p => p.Address).HasColumnName("EmailAddress");
+       });
+       
+       builder.Entity<Profile>().OwnsOne(p => p.Phone, n =>
+       {
+        n.WithOwner().HasForeignKey("Id");
+        n.Property(p => p.Number).HasColumnName("PhoneNumber");
+       });
+       
+       builder.Entity<Profile>().OwnsOne(p => p.Dni, n =>
+       {
+        n.WithOwner().HasForeignKey("Id");
+        n.Property(p => p.Number).HasColumnName("Dni");
+       });
       
       // IAM Context
       builder.Entity<User>().ToTable("Users").HasKey(u => u.Id);
