@@ -1,4 +1,5 @@
-﻿using AquaEngine.API.Profiles.Domain.Model.Commands;
+﻿using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using AquaEngine.API.Profiles.Domain.Model.Commands;
 using AquaEngine.API.Profiles.Domain.Model.ValueObjects;
 
 namespace AquaEngine.API.Profiles.Domain.Model.Aggregates;
@@ -18,6 +19,7 @@ public partial class Profile
     public PersonName Name { get; }
     public PhoneNumber Phone { get; }
     public EmailAddress Email { get; }
+    public UserId UserIdentifier { get; }
     
     public string FullName => Name.FullName;
     public string EmailAddress => Email.Address;
@@ -28,13 +30,15 @@ public partial class Profile
         Email = new EmailAddress();
         Phone = new PhoneNumber();
         Dni = new DniNumber();
+        UserIdentifier = new UserId();
     }
 
-    public Profile(CreateProfileCommand command)
+    public Profile(CreateProfileCommand command, int userIdentifier)
     {
         Name = new PersonName(command.FirstName, command.LastName);
         Email = new EmailAddress(command.Email);
         Phone = new PhoneNumber(command.PhoneNumber);
         Dni = new DniNumber(command.DniNumber);
+        UserIdentifier = new UserId(userIdentifier);
     }
 }
