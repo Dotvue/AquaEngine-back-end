@@ -151,14 +151,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
       builder.Entity<Profile>().HasKey(p => p.Id);
       builder.Entity<Profile>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+      builder.Entity<Profile>().Property(p => p.FullName).IsRequired();
       
-      builder.Entity<Profile>().OwnsOne(p => p.Name, n => 
-       {
-        n.WithOwner().HasForeignKey("Id");
-        n.Property(p => p.Name).HasColumnName("FirstName");
-        n.Property(p => p.LastName).HasColumnName("LastName");
-       });
-
        builder.Entity<Profile>().OwnsOne(p => p.Email, n =>
        {
         n.WithOwner().HasForeignKey("Id");
@@ -175,6 +169,12 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
        {
         n.WithOwner().HasForeignKey("Id");
         n.Property(p => p.Number).HasColumnName("Dni");
+       });
+       
+       builder.Entity<Profile>().OwnsOne(p => p.UserIdentifier, n =>
+       {
+        n.WithOwner().HasForeignKey("Id");
+        n.Property(p => p.Identifier).HasColumnName("UserId");
        });
       
       // IAM Context
