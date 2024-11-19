@@ -14,8 +14,11 @@ public interface IProfileCommandService
     /// <param name="command">
     /// Create profile command.
     /// </param>
+    /// <param name="userId">
+    /// User identifier.
+    /// </param>
     /// <returns>
     /// The created profile.
     /// </returns>
-    Task<Profile?> Handle(CreateProfileCommand command);
+    Task<Profile?> Handle(CreateProfileCommand command, int userId);
 }
