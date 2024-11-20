@@ -115,4 +115,27 @@ public class ProductsController(IProductCommandService productCommandService,
         
         return NoContent();
     }
+    
+    [HttpGet("users/{userId}/products")]
+    [SwaggerOperation(
+        Summary = "Get products by UserId",
+        Description = "Get all products associated with the specified UserId",
+        OperationId = "GetProductsByUserId")]
+    [SwaggerResponse(StatusCodes.Status200OK, 
+        "The products were found", typeof(IEnumerable<ProductResource>))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "No products found for the given UserId")]
+    public async Task<ActionResult> GetProductsByUserId(int userId)
+    {
+        var getProductByUserIdQuery = new GetProductByUserIdQuery(userId);
+        
+        var result = await productQueryService.Handle(getProductByUserIdQuery);
+        
+        if (result is null)
+            return NotFound();
+        
+        var resources = result.Select(
+            ProductResourceFromEntityAssembler.ToResourceFromEntity);
+        
+        return Ok(resources);
+    }
 }
